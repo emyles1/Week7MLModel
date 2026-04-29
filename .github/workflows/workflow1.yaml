@@ -6,8 +6,30 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    steps: 
-    - uses: actions/checkout@v6
-    - run: |
-        echo ${{ github.workspace }}
-        echo $GITHUB_WORKSPACE
+    steps:
+      - uses: actions/checkout@v6
+
+      - run: |
+          echo ${{ github.workspace }}
+          echo $GITHUB_WORKSPACE
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Confirm Python Version
+        run: |
+          python --version
+
+      - name: clean-data
+        run: |
+          cd ModelCleaning
+          ls -al
+          pip install pandas
+          python Cleandata.py
+
+      - name: train_model
+        run: |
+          pip install scikit-learn joblib
+          python ModelCleaning/train_test.py
